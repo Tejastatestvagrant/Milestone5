@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beautiful To-Do List</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">To-Do List</h4>
+          </div>
+          <div class="card-body">
+            <ul class="list-group">
+              <!-- Sample to-do list items -->
+              <li class="list-group-item">
+                <input type="checkbox" id="item1" />
+                <label for="item1" class="ml-3">Buy groceries</label>
+              </li>
+              <li class="list-group-item">
+                <input type="checkbox" id="item2" />
+                <label for="item2" class="ml-3">Finish project report</label>
+              </li>
+              <li class="list-group-item">
+                <input type="checkbox" id="item3" />
+                <label for="item3" class="ml-3">Call a friend</label>
+              </li>
+              <!-- Add more to-do list items here -->
+            </ul>
+          </div>
+          <div class="card-footer bg-light">
+            <form class="form-inline">
+              <div class="form-group flex-grow-1">
+                <input type="text" class="form-control w-100" placeholder="Add new item" />
+              </div>
+              <button type="submit" class="btn btn-primary ml-2">Add</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (Make sure to include jQuery and Popper.js before this) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
