@@ -30,12 +30,14 @@ function welcomeMessage() {
 
     const index=noteList.findIndex((note)=>{
       return note.title===title
-    })
+    }
+    )
+
 
     if(index!=-1)
     {
       noteList.splice(index,1);
-    }
+    }else
     {
       console.log(`this note  is not there in list `);
     }
@@ -45,5 +47,21 @@ function welcomeMessage() {
 
   }
 
+  const editNode=(title ,newContent)=>{
 
-  deleteNote('First Note');
+    const edit=noteList.find((note)=> note.title===title);
+    if(edit)
+    {
+      edit.content=newContent;
+      console.log(`${title} is successfully updated the content as ${newContent}`);
+    }else{
+      console.log(`${title} note is not found `);
+    }
+
+  }
+
+
+
+  deleteNote('Second Note');
+  editNode('First Note' ,'updated first version');
+  displayAllNotes();
