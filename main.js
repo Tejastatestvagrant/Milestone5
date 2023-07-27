@@ -1,7 +1,7 @@
 import { promisify } from "util";
 import Note from "./src/Note.js";
 import fs, { writeFileSync } from "fs";
-import InputInValidError from "./error.js";
+import {InputInValidError,FileAccessError ,InvalidJsonError} from "./error.js";
 import prompt from "prompt-sync";
 function welcomeMessage() {
   console.log("Welcome to the Note-Taking Application!");
@@ -71,24 +71,43 @@ const editNote = (title, newContent) => {
 
 
 
-const saveNotes = async (data, file) => {
+const saveNotes = async () => {
   try {
     const writeFileAsync = promisify(fs.writeFile);
-    const jsonData = JSON.stringify(data);
-    await writeFileAsync(file, jsonData, "utf-8");
+    const jsonData = JSON.stringify(noteList);
+    await writeFileAsync('./src/Database.json', jsonData, "utf-8");
     console.log("Successfully updated");
   } catch (err) {
     console.log("Error Occurred " + err);
   }
 };
 
-const loadNotes = async (file) => {
-  const readFileAsync = promisify(fs.readFile);
+const loadNotes = async () => {
+  try{const readFileAsync = promisify(fs.readFile);
 
-  const loadedData = await readFileAsync(file, "utf-8");
+  const loadedData = await readFileAsync('./src/Database.json', "utf-8");
   const datas =  JSON.parse(loadedData);
 
-  noteList = datas.map((data) => new Note(data.title, data.content));
+  noteList = datas.map((data) => new Note(data.title, data.content));}
+  catch(err)
+  {
+    if(err instanceof InputInValidError)
+    {
+      console.log(err.name);
+    }
+    else if(err instanceof FileAccessError )
+    {
+      console.log(err.name);
+    }
+    else if(err instanceof InvalidJsonError )
+    {
+      console.log(err.name);
+    }
+    else 
+    {
+     console.log(err.name);
+    }
+  }
 };
 
 
@@ -112,7 +131,25 @@ const isValidateInput = (title, content) => {
   return true;
 };
 
+const search= async(Query)=>{
+ 
+  
+ 
+  return noteList.filter(note => 
+    {
+    const titleMatch = note.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const contentMatch = note.content.toLowerCase().includes(searchQuery.toLowerCase());
+    return titleMatch || contentMatch;
+  })
+}
+  
+
 const start = async() => {
+
+  let  userChoice;
+
+  do{
+
   console.log("\\nMenu:");
   console.log("1. Create a Note");
   console.log("2. Edit a Note");
@@ -120,10 +157,10 @@ const start = async() => {
   console.log("4. Display All Notes");
   console.log("5. Save Notes to a JSON File");
   console.log("6. Load Notes from a JSON File");
-  console.log("7. Quit");
+  console.log("7. Search");
+  console.log("8.Quit");
 
-  const userChoice=parseInt(prompt("enter the choose : "))
-
+   userChoice=parseInt(prompt("enter the choose : "))
   switch (userChoice) {
     case 1:
         const title = prompt("Enter note title: ");
@@ -149,17 +186,19 @@ const start = async() => {
         await loadNotes();
         break;
     case 7:
-        console.log("\\nExiting the application.");
+        const result=search(prompt("enter the query to search : "));
+        console.table(result);
         break;
+   case 8:
+    console.log("thanks for using ");
+    break;
     default:
         console.log("\\nInvalid choice! Please try again.");
 }
+  }while(userChoice!==8);
 
 
 
 }
 start();
 
-// deleteNote('Second Note');
-// editNode('First Note' ,'updated first version');
-// savaFile(noteList,'./src/Database.json')

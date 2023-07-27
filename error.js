@@ -1,5 +1,5 @@
 
-export default class InputInValidError extends Error{
+ class InputInValidError extends Error{
 
     constructor(message)
     {
@@ -7,3 +7,18 @@ export default class InputInValidError extends Error{
         this.name='InputInValidError'
     }
 }
+
+class FileAccessError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'FileAccessError';
+    }
+}
+class InvalidJsonError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'InvalidJsonError';
+    }
+}
+
+export {InputInValidError,FileAccessError ,InvalidJsonError}
