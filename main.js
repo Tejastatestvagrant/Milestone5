@@ -2,6 +2,7 @@ import { promisify } from "util";
 import Note from "./src/Note.js";
 import fs, { writeFileSync } from "fs";
 import InputInValidError from "./error.js";
+import prompt from "prompt-sync";
 function welcomeMessage() {
   console.log("Welcome to the Note-Taking Application!");
 }
@@ -10,15 +11,19 @@ welcomeMessage();
 
 let noteList = [];
 
-// let createNote=(title,content)=>{
-//   let newNote=new Note(title,content);
-//   noteList.push(newNote);
+let createNote=(title,content)=>{
 
-// }
+  const validition =isValidateInput(title,content);
+  if(validition!==true)
+  {
+    console.log(err);
+    return;
+  }
 
-// createNote('First Note', 'This is the first note.');
-// createNote('Second Note', 'This is the second note.');
-// createNote('Third Note', 'This is the third note.');
+  let newNote=new Note(title,content);
+  noteList.push(newNote);
+}
+
 
 const displayAllNotes = () => {
   for (const note of noteList) {
@@ -28,7 +33,8 @@ const displayAllNotes = () => {
 };
 
 const deleteNote = (title) => {
-  const index = noteList.findIndex((note) => {
+     
+  {const index = noteList.findIndex((note) => {
     return note.title === title;
   });
 
@@ -38,10 +44,19 @@ const deleteNote = (title) => {
     console.log(`this note  is not there in list `);
   }
 
-  console.table(noteList);
+  console.table(noteList);}
 };
 
-const editNode = (title, newContent) => {
+const editNote = (title, newContent) => {
+  
+     const validition=isValidateInput(title,newContent)
+
+  if(validition!==true)
+  {
+    console.log(err);
+    return;
+  }
+  
   const edit = noteList.find((note) => note.title === title);
   if (edit) {
     edit.content = newContent;
@@ -51,24 +66,12 @@ const editNode = (title, newContent) => {
   } else {
     console.log(`${title} note is not found `);
   }
+  
 };
 
-//  const writeDataToFile= async(data,filename)=>{
 
-//   const jsonData= JSON.stringify(data)
 
-// fs.writeFile(filename,jsonData,'utf-8',(err)=>{
-//   if(err)
-//   {
-//     console.log(`error occured during writing file`);
-//   }
-//   else{
-//     console.log(`Successfully updated file `);
-
-//   }
-// })
-
-const savaFile = async (data, file) => {
+const saveNotes = async (data, file) => {
   try {
     const writeFileAsync = promisify(fs.writeFile);
     const jsonData = JSON.stringify(data);
@@ -79,17 +82,16 @@ const savaFile = async (data, file) => {
   }
 };
 
-const loadData = async (file) => {
+const loadNotes = async (file) => {
   const readFileAsync = promisify(fs.readFile);
 
   const loadedData = await readFileAsync(file, "utf-8");
-  const datas = await JSON.parse(loadedData);
+  const datas =  JSON.parse(loadedData);
 
   noteList = datas.map((data) => new Note(data.title, data.content));
 };
 
-await loadData("./src/Database.json");
-console.table(noteList);
+
 
 const isValidateInput = (title, content) => {
   const titleRegex = /^[a-zA-Z0-9\s-]{3,}$/g;
@@ -120,21 +122,21 @@ const start = async() => {
   console.log("6. Load Notes from a JSON File");
   console.log("7. Quit");
 
-  const choose=parseInt(prompt("enter the choose : "))
+  const userChoice=parseInt(prompt("enter the choose : "))
 
   switch (userChoice) {
     case 1:
         const title = prompt("Enter note title: ");
-        const content = readlineSync.question("Enter note content: ");
+        const content = prompt("Enter note content: ");
         createNote(title, content);
         break;
     case 2:
-        const titleToEdit = readlineSync.question("Enter the title of the note to edit: ");
-        const newContent = readlineSync.question("Enter the new content for the note: ");
+        const titleToEdit = prompt("Enter the title of the note to edit: ");
+        const newContent = prompt("Enter the new content for the note: ");
         editNote(titleToEdit, newContent);
         break;
     case 3:
-        const titleToDelete = readlineSync.question("Enter the title of the note to delete: ");
+        const titleToDelete = prompt("Enter the title of the note to delete: ");
         deleteNote(titleToDelete);
         break;
     case 4:
@@ -155,7 +157,8 @@ const start = async() => {
 
 
 
-};
+}
+start();
 
 // deleteNote('Second Note');
 // editNode('First Note' ,'updated first version');

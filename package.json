@@ -11,6 +11,7 @@
   "type": "module",
   "dependencies": {
     "fs": "^0.0.1-security",
-    "module": "^1.2.5"
+    "module": "^1.2.5",
+    "prompt-sync": "^4.2.0"
   }
 }
