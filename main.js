@@ -2,7 +2,8 @@ import { promisify } from "util";
 import Note from "./src/Note.js";
 import fs, { writeFileSync } from "fs";
 import {InputInValidError,FileAccessError ,InvalidJsonError} from "./error.js";
-import prompt from "prompt-sync";
+import PromptSync from "prompt-sync";
+const prompt =PromptSync();
 function welcomeMessage() {
   console.log("Welcome to the Note-Taking Application!");
 }
@@ -137,8 +138,8 @@ const search= async(Query)=>{
  
   return noteList.filter(note => 
     {
-    const titleMatch = note.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const contentMatch = note.content.toLowerCase().includes(searchQuery.toLowerCase());
+    const titleMatch = note.title.toLowerCase().includes(Query.toLowerCase());
+    const contentMatch = note.content.toLowerCase().includes(Query.toLowerCase());
     return titleMatch || contentMatch;
   })
 }
